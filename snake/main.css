@@ -7,4 +7,13 @@
 	overflow-x: hidden;
 	margin: auto;
 	padding: 15px;
+	font-family:"Courier New", Courier, monospace;
+	font-size: 300%;
+}
+table{
+    table-layout: fixed;
+    width: 500px;
+}
+td {
+width: 50px;
 }
