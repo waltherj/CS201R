@@ -1,0 +1,10 @@
+#gameFrame {
+	color: rgb(0, 0, 0);
+	background: rgba(25, 0, 184, 0.5);
+	width: 500px;
+	height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	margin: auto;
+	padding: 15px;
+}
