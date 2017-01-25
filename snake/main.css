@@ -5,8 +5,8 @@ body {
 #gameFrame {
 	color: rgb(0, 0, 0);
 	background: rgba(25, 0, 184, 0.5);
-	width: 500px;
-	height: 500px;
+  width: 35%;
+	height: 50%;
 	overflow-y: auto;
 	overflow-x: hidden;
 	margin: auto;
@@ -23,8 +23,10 @@ table{
 }
 
 td {
-height: 50px;
-width: 50px;
+  display: table-cell;
+  height: 55px;
+  width: 20px;
+  border: 2px dashed #40f;
 }
 
 #start {
@@ -43,7 +45,7 @@ width: 50px;
 }
 
 #instructions {
-  width: 100%;
+  width: 70%;
   text-align: center;
   font-family: "Courier New", Courier, monospace;
   margin: auto;
@@ -53,7 +55,6 @@ width: 50px;
 
 #instructions p {
   text-align: left;
-  width: 700px;
   margin: auto;
   font-size: 16px;
 }
