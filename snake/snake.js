@@ -133,15 +133,14 @@ createTable(displayArray);
 
 
 function run() {
-generateFood();
-setInterval(function() { eternalSnake() }, 100);
+	generateFood();
+	setInterval(function() { eternalSnake() }, 200);
 }
 
 function eternalSnake() {
-moveSnake(SNAKE[0]);
-convertGameToDisplay();
-createTable(displayArray);
-
+	moveSnake(SNAKE[0]);
+	convertGameToDisplay();
+	createTable(displayArray);
 }
 
 
