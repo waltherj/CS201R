@@ -54,7 +54,31 @@ function moveSnake(segment) {
 	if (segment.y < 0) {
 		segment.y += HEIGHT;
 	}
+	if (gameArray[segment.y][segment.x] = GridEnum.SNAKE) {
+	//COLLISION
+	}
+	else if (gameArray[segment.y][segment.x] = GridEnum.SNAKE) {
+	//EAT
+	eat();
+	}
 	gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+}
+
+function eat() {
+	alert("YUM");
+generateFood();
+}
+
+function collision() {
+	alert("YOU DIED");
+}
+
+function generateFood() {
+	gameArray[getRandomInt(0,7)][getRandomInt(0,7)] = GridEnum.FOOD;
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function convertGameToDisplay() {
@@ -68,7 +92,7 @@ function convertGameToDisplay() {
 			else if (gameArray[i][j] == GridEnum.SNAKE) {
 				displayArray[i][j] = "0";
 			}
-			else if (gameArray[step] == GridEnum.FOOD) {
+			else if (gameArray[i][j] == GridEnum.FOOD) {
 				displayArray[i][j] = "*";
 			}
 		}
@@ -108,18 +132,12 @@ createTable(displayArray);
 
 
 function run() {
+generateFood();
 setInterval(function() { eternalSnake() }, 100);
 }
 
-var w = 1;
 function eternalSnake() {
-if (w > 0) {
 moveSnake(SNAKE[0]);
-}
-else {
-moveSnake(SNAKE[0]);
-}
-w = w * -1;
 convertGameToDisplay();
 createTable(displayArray);
 
