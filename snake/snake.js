@@ -14,22 +14,23 @@ var DirEnum = {
 };
 
 var SNAKE = [];
-SNAKE.push(new SnakeSegment(0,0,true,true,null,null,DirEnum.LEFT));
+SNAKE.push(new SnakeSegment(0,0,true,true,DirEnum.LEFT));
 
-function SnakeSegment(x,y,head,tail,leader,follower, direction) {
+function SnakeSegment(x,y,head,tail, direction) {
 this.x = x;
 this.y = y;
 this.head = head;
 this.tail = tail;
-this.leader = leader;
-this.follower= follower;
 this.direction = direction;
 }
 var HEIGHT = 8;
 var WIDTH = 8;
 
-function moveSnake(segment) {
+function moveSnake(segment, index) {
+	if (segment.tail) {
 	gameArray[segment.y][segment.x] = GridEnum.EMPTY;
+	} 
+	if (segment.head) {
 	if (segment.direction == DirEnum.LEFT) {
 		segment.x--;
 	} 
@@ -63,10 +64,17 @@ function moveSnake(segment) {
 	eat();
 	}
 	gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+	}
+	else {
+		segment.x = SNAKE[index - 1].x;
+		segment.y = SNAKE[index - 1].y;
+	}
+
 }
 
 function eat() {
-	alert("YUM");
+SNAKE[SNAKE.length - 1].tail = false;
+SNAKE.push(new SnakeSegment(SNAKE[0].x -1,SNAKE[0].y - 1,false,true,DirEnum.LEFT));
 generateFood();
 }
 
@@ -138,7 +146,9 @@ function run() {
 }
 
 function eternalSnake() {
-	moveSnake(SNAKE[0]);
+	for (index = SNAKE.length - 1; index >= 0; --index) {
+		moveSnake(SNAKE[index], index);
+	}
 	convertGameToDisplay();
 	createTable(displayArray);
 }
