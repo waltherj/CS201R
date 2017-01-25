@@ -14,31 +14,32 @@ var DirEnum = {
 };
 
 var SNAKE = [];
-SNAKE.push(new SnakeSegment(0,0,true,true,null,null));
+SNAKE.push(new SnakeSegment(0,0,true,true,null,null,DirEnum.LEFT));
 
-function SnakeSegment(x,y,head,tail,leader,follower) {
+function SnakeSegment(x,y,head,tail,leader,follower, direction) {
 this.x = x;
 this.y = y;
 this.head = head;
 this.tail = tail;
 this.leader = leader;
 this.follower= follower;
+this.direction = direction;
 }
 var HEIGHT = 8;
 var WIDTH = 8;
 
-function moveSnake(segment, direction) {
+function moveSnake(segment) {
 	gameArray[segment.y][segment.x] = GridEnum.EMPTY;
-	if (direction == DirEnum.LEFT) {
+	if (segment.direction == DirEnum.LEFT) {
 		segment.x--;
 	} 
-	else if (direction == DirEnum.RIGHT) {
+	else if (segment.direction == DirEnum.RIGHT) {
 		segment.x++;
 	} 
-	else if (direction == DirEnum.UP) {
+	else if (segment.direction == DirEnum.UP) {
 		segment.y--;
 	} 
-	else if (direction == DirEnum.DOWN) {
+	else if (segment.direction == DirEnum.DOWN) {
 		segment.y++;
 	}  
 	if (segment.x >= WIDTH) {
@@ -111,10 +112,10 @@ setInterval(function() { eternalSnake() }, 100);
 var w = 1;
 function eternalSnake() {
 if (w > 0) {
-moveSnake(SNAKE[0], DirEnum.DOWN);
+moveSnake(SNAKE[0]);
 }
 else {
-moveSnake(SNAKE[0], DirEnum.LEFT);
+moveSnake(SNAKE[0]);
 }
 w = w * -1;
 convertGameToDisplay();
@@ -123,3 +124,20 @@ createTable(displayArray);
 }
 
 window.onload = run;
+
+document.onkeydown = function moveFunction() {
+switch (event.keyCode) {
+case 38:
+    SNAKE[0].direction = DirEnum.UP;
+    break;
+case 40:
+    SNAKE[0].direction = DirEnum.DOWN;
+    break;
+case 37:
+    SNAKE[0].direction = DirEnum.LEFT;
+    break;
+case 39:
+    SNAKE[0].direction = DirEnum.RIGHT;
+    break;
+}
+}
