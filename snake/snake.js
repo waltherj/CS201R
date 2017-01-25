@@ -47,6 +47,7 @@ function moveSnake(direction) {
 	}
 	gameArray[SNAKE.y][SNAKE.x] = GridEnum.SNAKE;
 }
+
 function convertGameToDisplay() {
 
 	var i,j;
@@ -96,6 +97,7 @@ while (size--) {
 convertGameToDisplay();
 createTable(displayArray);
 
+
 function run() {
 setInterval(function() { eternalSnake() }, 100);
 }
@@ -115,3 +117,9 @@ createTable(displayArray);
 }
 
 window.onload = run;
+
+function startSnake() {
+  var startButton = document.getElementById("start");
+  
+}
+

@@ -27,15 +27,28 @@ height: 50px;
 width: 50px;
 }
 
+#start {
+  display: block;
+  position: relative;
+  text-align: center;
+  bottom: 150px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 42px;
+  text-decoration: none;
+  color: black;
+  border-top: 4px solid black;
+  border-bottom: 4px solid black;
+  margin: auto;
+  width: 130px;
+}
+
 #instructions {
   width: 100%;
-  height: 100%;
-
   text-align: center;
   font-family: "Courier New", Courier, monospace;
   margin: auto;
   font-size: 24px;
-  position: absolute;
+  position: relative;
 }
 
 #instructions p {
