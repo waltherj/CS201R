@@ -54,10 +54,11 @@ function moveSnake(segment) {
 	if (segment.y < 0) {
 		segment.y += HEIGHT;
 	}
-	if (gameArray[segment.y][segment.x] = GridEnum.SNAKE) {
+	if (gameArray[segment.y][segment.x] == GridEnum.SNAKE) {
 	//COLLISION
+	collision();
 	}
-	else if (gameArray[segment.y][segment.x] = GridEnum.SNAKE) {
+	else if (gameArray[segment.y][segment.x] == GridEnum.FOOD) {
 	//EAT
 	eat();
 	}
