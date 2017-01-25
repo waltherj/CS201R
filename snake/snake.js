@@ -13,46 +13,55 @@ var DirEnum = {
 	DOWN:4
 };
 
-var SNAKE = {
-	x : 0,y : 0
+var SNAKE = [];
+SNAKE.push(new SnakeSegment(0,0,true,true,null,null,DirEnum.LEFT));
+
+function SnakeSegment(x,y,head,tail,leader,follower, direction) {
+this.x = x;
+this.y = y;
+this.head = head;
+this.tail = tail;
+this.leader = leader;
+this.follower= follower;
+this.direction = direction;
 }
 var HEIGHT = 8;
 var WIDTH = 8;
 
-function moveSnake(direction) {
-	gameArray[SNAKE.y][SNAKE.x] = GridEnum.EMPTY;
-	if (direction == DirEnum.LEFT) {
-		SNAKE.x--;
+function moveSnake(segment) {
+	gameArray[segment.y][segment.x] = GridEnum.EMPTY;
+	if (segment.direction == DirEnum.LEFT) {
+		segment.x--;
 	} 
-	else if (direction == DirEnum.RIGHT) {
-		SNAKE.x++;
+	else if (segment.direction == DirEnum.RIGHT) {
+		segment.x++;
 	} 
-	else if (direction == DirEnum.UP) {
-		SNAKE.y--;
+	else if (segment.direction == DirEnum.UP) {
+		segment.y--;
 	} 
-	else if (direction == DirEnum.DOWN) {
-		SNAKE.y++;
+	else if (segment.direction == DirEnum.DOWN) {
+		segment.y++;
 	}  
-	if (SNAKE.x >= WIDTH) {
-		SNAKE.x -= WIDTH;
+	if (segment.x >= WIDTH) {
+		segment.x -= WIDTH;
 	}
-	if (SNAKE.y >= HEIGHT) {
-		SNAKE.y -= HEIGHT;
+	if (segment.y >= HEIGHT) {
+		segment.y -= HEIGHT;
 	}
-	if (SNAKE.x < 0) {
-		SNAKE.x += WIDTH;
+	if (segment.x < 0) {
+		segment.x += WIDTH;
 	}
-	if (SNAKE.y < 0) {
-		SNAKE.y += HEIGHT;
+	if (segment.y < 0) {
+		segment.y += HEIGHT;
 	}
-	gameArray[SNAKE.y][SNAKE.x] = GridEnum.SNAKE;
+	gameArray[segment.y][segment.x] = GridEnum.SNAKE;
 }
 
 function convertGameToDisplay() {
 
 	var i,j;
-	for (i = 0; i < 8; i++) {
-		for (j = 0; j < 8; j++) {
+	for (i = 0; i < HEIGHT; i++) {
+		for (j = 0; j < WIDTH; j++) {
 			if (gameArray[i][j] == GridEnum.EMPTY) {
 				displayArray[i][j] = " ";
 			}
@@ -85,11 +94,11 @@ function createTable(tableData) {
   document.getElementById("gameTable").innerHTML = table.innerHTML;
 }
 
-var size = 8;
+var size = HEIGHT;
 var gameArray = new Array(size);
 var displayArray = new Array(size);
 while (size--) {
-	var length = 8;
+	var length = WIDTH;
 	gameArray[size] = new Array(length);
 	displayArray[size] = new Array(length);
 	while(length--) gameArray[size][length] = GridEnum.EMPTY;
@@ -105,10 +114,10 @@ setInterval(function() { eternalSnake() }, 100);
 var w = 1;
 function eternalSnake() {
 if (w > 0) {
-moveSnake(DirEnum.DOWN);
+moveSnake(SNAKE[0]);
 }
 else {
-moveSnake(DirEnum.LEFT);
+moveSnake(SNAKE[0]);
 }
 w = w * -1;
 convertGameToDisplay();
@@ -118,8 +127,27 @@ createTable(displayArray);
 
 window.onload = run;
 
+<<<<<<< HEAD
 function startSnake() {
   var startButton = document.getElementById("start");
   
 }
 
+=======
+document.onkeydown = function moveFunction() {
+switch (event.keyCode) {
+case 38:
+    SNAKE[0].direction = DirEnum.UP;
+    break;
+case 40:
+    SNAKE[0].direction = DirEnum.DOWN;
+    break;
+case 37:
+    SNAKE[0].direction = DirEnum.LEFT;
+    break;
+case 39:
+    SNAKE[0].direction = DirEnum.RIGHT;
+    break;
+}
+}
+>>>>>>> 2f207aa6ac689e5f598beb38238a359748721bd1
