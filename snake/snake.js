@@ -127,13 +127,11 @@ createTable(displayArray);
 
 window.onload = run;
 
-<<<<<<< HEAD
 function startSnake() {
   var startButton = document.getElementById("start");
   
 }
 
-=======
 document.onkeydown = function moveFunction() {
 switch (event.keyCode) {
 case 38:
@@ -150,4 +148,3 @@ case 39:
     break;
 }
 }
->>>>>>> 2f207aa6ac689e5f598beb38238a359748721bd1
