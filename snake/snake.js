@@ -143,12 +143,17 @@ createTable(displayArray);
 
 }
 
-window.onload = run;
 
+var startButton = document.getElementById("start");
+startButton.addEventListener("click", startSnake);
 function startSnake() {
-  var startButton = document.getElementById("start");
-  
+  startButton.innerHTML = "";
+  startButton.style.border = "0px";
+  startButton.style.marginBottom = "88px";
+  run();
 }
+
+
 
 document.onkeydown = function moveFunction() {
 switch (event.keyCode) {
