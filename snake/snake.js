@@ -14,14 +14,14 @@ var DirEnum = {
 };
 
 var SNAKE = [];
-SNAKE.push(new SnakeSegment(0,0,true,true,DirEnum.LEFT));
+var direction;
+SNAKE.push(new SnakeSegment(0,0,true,true));
 
-function SnakeSegment(x,y,head,tail, direction) {
+function SnakeSegment(x,y,head,tail) {
 this.x = x;
 this.y = y;
 this.head = head;
 this.tail = tail;
-this.direction = direction;
 }
 var HEIGHT = 8;
 var WIDTH = 8;
@@ -31,16 +31,16 @@ function moveSnake(segment, index) {
 	gameArray[segment.y][segment.x] = GridEnum.EMPTY;
 	} 
 	if (segment.head) {
-	if (segment.direction == DirEnum.LEFT) {
+	if (direction == DirEnum.LEFT) {
 		segment.x--;
 	} 
-	else if (segment.direction == DirEnum.RIGHT) {
+	else if (direction == DirEnum.RIGHT) {
 		segment.x++;
 	} 
-	else if (segment.direction == DirEnum.UP) {
+	else if (direction == DirEnum.UP) {
 		segment.y--;
 	} 
-	else if (segment.direction == DirEnum.DOWN) {
+	else if (direction == DirEnum.DOWN) {
 		segment.y++;
 	}  
 	if (segment.x >= WIDTH) {
@@ -74,7 +74,7 @@ function moveSnake(segment, index) {
 
 function eat() {
 SNAKE[SNAKE.length - 1].tail = false;
-SNAKE.push(new SnakeSegment(SNAKE[0].x -1,SNAKE[0].y - 1,false,true,DirEnum.LEFT));
+SNAKE.push(new SnakeSegment(SNAKE[0].x,SNAKE[0].y,false,true));
 generateFood();
 }
 
@@ -144,6 +144,7 @@ function run() {
 	generateFood();
 	setInterval(function() { eternalSnake() }, 200);
 }
+var gameOver = false;
 
 function eternalSnake() {
 	for (index = SNAKE.length - 1; index >= 0; --index) {
@@ -168,16 +169,28 @@ function startSnake() {
 document.onkeydown = function moveFunction() {
 switch (event.keyCode) {
 case 38:
-    SNAKE[0].direction = DirEnum.UP;
+	if (direction == DirEnum.DOWN && !SNAKE[0].tail) {
+		collision();
+	}
+    direction = DirEnum.UP;
     break;
 case 40:
-    SNAKE[0].direction = DirEnum.DOWN;
+	if (direction == DirEnum.UP && !SNAKE[0].tail) {
+		collision();
+	}
+    direction = DirEnum.DOWN;
     break;
 case 37:
-    SNAKE[0].direction = DirEnum.LEFT;
+	if (direction == DirEnum.RIGHT && !SNAKE[0].tail) {
+		collision();
+	}
+    direction = DirEnum.LEFT;
     break;
 case 39:
-    SNAKE[0].direction = DirEnum.RIGHT;
+	if (direction == DirEnum.LEFT && !SNAKE[0].tail) {
+		collision();
+	}
+    direction = DirEnum.RIGHT;
     break;
 }
 }
