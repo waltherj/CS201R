@@ -15,13 +15,14 @@ var DirEnum = {
 
 var SNAKE = [];
 var direction;
-SNAKE.push(new SnakeSegment(0,0,true,true));
+SNAKE.push(new SnakeSegment(0,0,true,true, randomLetter()));
 
-function SnakeSegment(x,y,head,tail) {
+function SnakeSegment(x,y,head,tail,letter) {
 this.x = x;
 this.y = y;
 this.head = head;
 this.tail = tail;
+this.letter = letter;
 }
 var HEIGHT = 8;
 var WIDTH = 8;
@@ -77,8 +78,13 @@ function moveSnake(segment, index) {
 
 function eat() {
 SNAKE[SNAKE.length - 1].tail = false;
-SNAKE.push(new SnakeSegment(SNAKE[SNAKE.length - 1].x,SNAKE[SNAKE.length - 1].y,false,true));
+SNAKE.push(new SnakeSegment(SNAKE[SNAKE.length - 1].x,SNAKE[SNAKE.length - 1].y,false,true, randomLetter()));
 generateFood();
+}
+
+function randomLetter() {
+	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	return alphabet.charAt(Math.floor(Math.random() * alphabet.length));
 }
 
 function collision() {
@@ -118,13 +124,16 @@ function convertGameToDisplay() {
 			if (gameArray[i][j] == GridEnum.EMPTY) {
 				displayArray[i][j] = " ";
 			}
-			else if (gameArray[i][j] == GridEnum.SNAKE) {
-				displayArray[i][j] = "0";
-			}
+			//else if (gameArray[i][j] == GridEnum.SNAKE) {
+			//	displayArray[i][j] = "0";
+			//}
 			else if (gameArray[i][j] == GridEnum.FOOD) {
 				displayArray[i][j] = "*";
 			}
 		}
+	}
+	for (index = SNAKE.length - 1; index >= 0; --index) {
+		displayArray[SNAKE[index].y][SNAKE[index].x] = SNAKE[index].letter;
 	}
 }
 
