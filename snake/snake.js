@@ -101,16 +101,17 @@ function moveSnake(segment, index) {
 function eat() {
 SNAKE[SNAKE.length - 1].tail = false;
 SNAKE.push(new SnakeSegment(SNAKE[SNAKE.length - 1].x,SNAKE[SNAKE.length - 1].y,false,true, FOOD[0].letter, SNAKE.length - 1));
+document.getElementById("eat").play();
 generateFood();
 }
 
 function randomLetter() {
-	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	var alphabet = "AAAAAAAABBCCCDDDDEEEEEEEEEEEEEFFGGHHHHHHIIIIIIIJKLLLLMMNNNNNNNOOOOOOOOPPQRRRRRRSSSSSSTTTTTTTTTUUUVWWXYYZ"
 	return alphabet.charAt(Math.floor(Math.random() * alphabet.length));
 }
 
 function collision() {
-	alert("YOU DIED");
+	alert("You Died! Your score was: " + SNAKE.length);
   for (i=0; i<WIDTH; i++){
     for (j=0; j<HEIGHT; j++){
       gameArray[i][j] = GridEnum.EMPTY;
@@ -175,7 +176,7 @@ function createTable(tableData, gameData) {
 	for (j = 0; j < tableData[i].length; ++j) {
 	var cell = document.createElement('td');
 	if (gameData[i][j] == GridEnum.SNAKE) {
-	cell.style.backgroundColor = "yellow";
+	cell.style.backgroundColor = "rgb(255, 112, 10)";
 	}
       cell.appendChild(document.createTextNode(tableData[i][j]));
 	row.appendChild(cell);
@@ -270,8 +271,17 @@ case 187:
 case 13:
 	var s = document.getElementById("start");
 	if (s.innerHTML != "")
-	s.click();
+		startSnake();
 	break;
+case 16:
+	var s = document.getElementById("start");
+	if (s.innerHTML == "") {
+		gameArray[FOOD[0].x][FOOD[0].y] = GridEnum.EMPTY;
+		document.getElementById("move").play();
+		generateFood();
+	}
+	break;
+	
 }
 }
 
@@ -284,14 +294,17 @@ window.addEventListener("keydown", function(e) {
 document.getElementById("speed").onclick = speedup();
 
 function speedup(){  
-if (intervalSpeed > 6)
+if (intervalSpeed > 6) {
+//document.getElementById("up").play();
 	intervalSpeed -= 5;
 clearInterval(interval);
 	interval = setInterval(function() { eternalSnake() }, intervalSpeed);
 }
+}
 document.getElementById("slow").onclick = slowdown();
 
-function slowdown(){  
+function slowdown(){
+//document.getElementById("down").play();  
 intervalSpeed += 5;
 clearInterval(interval);
 	interval = setInterval(function() { eternalSnake() }, intervalSpeed);
