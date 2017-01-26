@@ -30,6 +30,9 @@ function moveSnake(segment, index) {
 	if (segment.tail) {
 	gameArray[segment.y][segment.x] = GridEnum.EMPTY;
 	} 
+	if (segment.tail){
+	segment.wait--;
+	}
 	if (segment.head) {
 	if (direction == DirEnum.LEFT) {
 		segment.x--;
@@ -74,7 +77,7 @@ function moveSnake(segment, index) {
 
 function eat() {
 SNAKE[SNAKE.length - 1].tail = false;
-SNAKE.push(new SnakeSegment(SNAKE[0].x,SNAKE[0].y,false,true));
+SNAKE.push(new SnakeSegment(SNAKE[SNAKE.length - 1].x,SNAKE[SNAKE.length - 1].y,false,true));
 generateFood();
 }
 
