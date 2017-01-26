@@ -58,15 +58,21 @@ function moveSnake(segment, index) {
 	if (segment.y < 0) {
 		segment.y += HEIGHT;
 	}
-	if (gameArray[segment.y][segment.x] == GridEnum.SNAKE) {
-	//COLLISION
-	collision();
-	}
-	else if (gameArray[segment.y][segment.x] == GridEnum.FOOD) {
-	//EAT
-	eat();
-	}
-	gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+
+		if (gameArray[segment.y][segment.x] == GridEnum.SNAKE) {
+		//COLLISION
+		collision();
+	
+		}
+		else if (gameArray[segment.y][segment.x] == GridEnum.FOOD) {
+		//EAT
+		eat();
+		gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+		}
+		else {
+			gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+		}
+
 	}
 	else {
 		segment.x = SNAKE[index - 1].x;
@@ -88,18 +94,19 @@ function randomLetter() {
 
 function collision() {
 	alert("YOU DIED");
-  for (i=0; i<8; i++){
-    for (j=0; j<8; j++){
+  for (i=0; i<WIDTH; i++){
+    for (j=0; j<HEIGHT; j++){
       gameArray[i][j] = GridEnum.EMPTY;
     }
   }
-  gameArray[firstPosition][secondPosition] = GridEnum.EMPTY;
+  //gameArray[firstPosition][secondPosition] = GridEnum.EMPTY;
   SNAKE = [];
   direction=null;
   startButton.innerHTML = "Start";
   startButton.style.borderTop = "4px solid black";
   startButton.style.borderBottom = "4px solid black";
   startButton.style.marginBottom = "10px";
+gameOver = true;
   
 }
 
@@ -109,8 +116,8 @@ var secondPosition =0;
 function generateFood() {
 	var ranX, ranY;
 	do {
-	ranX = getRandomInt(0,7);
-	ranY = getRandomInt(0,7);
+	ranX = getRandomInt(0,WIDTH - 1);
+	ranY = getRandomInt(0,HEIGHT - 1);
 	} while (gameArray[ranX][ranY] == GridEnum.SNAKE);
 	gameArray[ranX][ranY] = GridEnum.FOOD;
 	firstPosition = ranX;
@@ -201,30 +208,36 @@ run();
 }
 
 
-
 document.onkeydown = function moveFunction() {
 switch (event.keyCode) {
 case 38:
 	if (direction == DirEnum.DOWN && !SNAKE[0].tail) {
 		collision();
+	break;
 	}
     direction = DirEnum.UP;
     break;
 case 40:
 	if (direction == DirEnum.UP && !SNAKE[0].tail) {
 		collision();
+	break;
+
 	}
     direction = DirEnum.DOWN;
     break;
 case 37:
 	if (direction == DirEnum.RIGHT && !SNAKE[0].tail) {
 		collision();
+	break;
+
 	}
     direction = DirEnum.LEFT;
     break;
 case 39:
 	if (direction == DirEnum.LEFT && !SNAKE[0].tail) {
 		collision();
+	break;
+
 	}
     direction = DirEnum.RIGHT;
     break;
