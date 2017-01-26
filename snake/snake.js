@@ -4,7 +4,8 @@
 var GridEnum = {
 	SNAKE: 1,
 	FOOD: 2,
-	EMPTY: 3
+	EMPTY: 3,
+	PENDING: 4,
 };
 var DirEnum = {
 	LEFT:1,
@@ -14,60 +15,68 @@ var DirEnum = {
 };
 
 var SNAKE = [];
+var FOOD = []
 var direction;
 
-function SnakeSegment(x,y,head,tail,letter) {
+window.onload = function() {
+    document.getElementById("snakeSong").play();
+}
+
+function SnakeSegment(x,y,head,tail,letter,invisible) {
 this.x = x;
 this.y = y;
 this.head = head;
 this.tail = tail;
 this.letter = letter;
+this.invisible = invisible;
 }
-var HEIGHT = 8;
-var WIDTH = 8;
+
+function FoodPiece(x,y,letter,index) {
+this.x = x;
+this.y = y;
+this.letter = letter;
+}
+
+var HEIGHT = 16;
+var WIDTH = 16;
 
 function moveSnake(segment, index) {
 	if (segment.tail) {
 	gameArray[segment.y][segment.x] = GridEnum.EMPTY;
-	} 
-	if (segment.tail){
-	segment.wait--;
 	}
 	if (segment.head) {
-	if (direction == DirEnum.LEFT) {
-		segment.x--;
-	} 
-	else if (direction == DirEnum.RIGHT) {
-		segment.x++;
-	} 
-	else if (direction == DirEnum.UP) {
-		segment.y--;
-	} 
-	else if (direction == DirEnum.DOWN) {
-		segment.y++;
-	}  
-	if (segment.x >= WIDTH) {
-		segment.x -= WIDTH;
-	}
-	if (segment.y >= HEIGHT) {
-		segment.y -= HEIGHT;
-	}
-	if (segment.x < 0) {
-		segment.x += WIDTH;
-	}
-	if (segment.y < 0) {
-		segment.y += HEIGHT;
-	}
-
+		if (direction == DirEnum.LEFT) {
+			segment.x--;
+		} 
+		else if (direction == DirEnum.RIGHT) {
+			segment.x++;
+		} 
+		else if (direction == DirEnum.UP) {
+			segment.y--;
+		} 
+		else if (direction == DirEnum.DOWN) {
+			segment.y++;
+		}  
+		if (segment.x >= WIDTH) {
+			segment.x -= WIDTH;
+		}
+		if (segment.y >= HEIGHT) {
+			segment.y -= HEIGHT;
+		}
+		if (segment.x < 0) {
+			segment.x += WIDTH;
+		}
+		if (segment.y < 0) {
+			segment.y += HEIGHT;
+		}
 		if (gameArray[segment.y][segment.x] == GridEnum.SNAKE) {
-		//COLLISION
-		collision();
-	
+			//COLLISION
+			collision();
 		}
 		else if (gameArray[segment.y][segment.x] == GridEnum.FOOD) {
-		//EAT
-		eat();
-		gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+			//EAT
+			gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+			eat();
 		}
 		else {
 			gameArray[segment.y][segment.x] = GridEnum.SNAKE;
@@ -77,13 +86,21 @@ function moveSnake(segment, index) {
 	else {
 		segment.x = SNAKE[index - 1].x;
 		segment.y = SNAKE[index - 1].y;
+
+	if (segment.invisible > 0) {
+		segment.invisible--;
+		gameArray[segment.y][segment.x] = GridEnum.PENDING;
+	} else {
+		gameArray[segment.y][segment.x] = GridEnum.SNAKE;
+	}
+
 	}
 
 }
 
 function eat() {
 SNAKE[SNAKE.length - 1].tail = false;
-SNAKE.push(new SnakeSegment(SNAKE[SNAKE.length - 1].x,SNAKE[SNAKE.length - 1].y,false,true, randomLetter()));
+SNAKE.push(new SnakeSegment(SNAKE[SNAKE.length - 1].x,SNAKE[SNAKE.length - 1].y,false,true, FOOD[0].letter, SNAKE.length - 1));
 generateFood();
 }
 
@@ -101,6 +118,7 @@ function collision() {
   }
   //gameArray[firstPosition][secondPosition] = GridEnum.EMPTY;
   SNAKE = [];
+FOOD = [];
   direction=null;
   startButton.innerHTML = "Start";
   startButton.style.borderTop = "4px solid black";
@@ -111,17 +129,17 @@ gameOver = true;
 }
 
 
-var firstPosition =0;
-var secondPosition =0;
 function generateFood() {
 	var ranX, ranY;
 	do {
 	ranX = getRandomInt(0,WIDTH - 1);
 	ranY = getRandomInt(0,HEIGHT - 1);
-	} while (gameArray[ranX][ranY] == GridEnum.SNAKE);
+	} while (gameArray[ranX][ranY] == GridEnum.SNAKE || gameArray[ranX][ranY] == GridEnum.PENDING);
 	gameArray[ranX][ranY] = GridEnum.FOOD;
-	firstPosition = ranX;
-	secondPosition = ranY;
+	ranX;
+	ranY;
+	FOOD = [];
+	FOOD.push(new FoodPiece(ranX, ranY, randomLetter()));
 }
 
 function getRandomInt(min, max) {
@@ -133,37 +151,38 @@ function convertGameToDisplay() {
 	var i,j;
 	for (i = 0; i < HEIGHT; i++) {
 		for (j = 0; j < WIDTH; j++) {
-			if (gameArray[i][j] == GridEnum.EMPTY) {
+			if (gameArray[i][j] == GridEnum.EMPTY || gameArray[i][j] == GridEnum.PENDING) {
 				displayArray[i][j] = " ";
-			}
-			//else if (gameArray[i][j] == GridEnum.SNAKE) {
-			//	displayArray[i][j] = "0";
-			//}
-			else if (gameArray[i][j] == GridEnum.FOOD) {
-				displayArray[i][j] = "*";
 			}
 		}
 	}
 	for (index = SNAKE.length - 1; index >= 0; --index) {
+		if (gameArray[SNAKE[index].y][SNAKE[index].x] == GridEnum.SNAKE)
 		displayArray[SNAKE[index].y][SNAKE[index].x] = SNAKE[index].letter;
+	}
+	for (index = 0; index < FOOD.length; ++index) {
+	displayArray[FOOD[index].x][FOOD[index].y] = FOOD[index].letter
 	}
 }
 
-function createTable(tableData) {
+function createTable(tableData, gameData) {
   var table = document.createElement('table');
   var tableBody = document.createElement('tbody');
 
-  tableData.forEach(function(rowData) {
+	for (i = 0; i < tableData.length; ++i) {
     var row = document.createElement('tr');
 
-    rowData.forEach(function(cellData) {
-      var cell = document.createElement('td');
-      cell.appendChild(document.createTextNode(cellData));
-      row.appendChild(cell);
-    });
+	for (j = 0; j < tableData[i].length; ++j) {
+	var cell = document.createElement('td');
+	if (gameData[i][j] == GridEnum.SNAKE) {
+	cell.style.backgroundColor = "yellow";
+	}
+      cell.appendChild(document.createTextNode(tableData[i][j]));
+	row.appendChild(cell);
+    };
 
     tableBody.appendChild(row);
-  });
+  };
   table.appendChild(tableBody);
   document.getElementById("gameTable").innerHTML = table.innerHTML;
 }
@@ -178,7 +197,7 @@ while (size--) {
 	while(length--) gameArray[size][length] = GridEnum.EMPTY;
 }
 convertGameToDisplay();
-createTable(displayArray);
+createTable(displayArray, gameArray);
 
 var interval = null;
 function run() {
@@ -193,7 +212,7 @@ function eternalSnake() {
 		moveSnake(SNAKE[index], index);
 	}
 	convertGameToDisplay();
-	createTable(displayArray);
+	createTable(displayArray, gameArray);
 }
 
 
