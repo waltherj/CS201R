@@ -15,7 +15,6 @@ var DirEnum = {
 
 var SNAKE = [];
 var direction;
-SNAKE.push(new SnakeSegment(0,0,true,true, randomLetter()));
 
 function SnakeSegment(x,y,head,tail,letter) {
 this.x = x;
@@ -89,12 +88,18 @@ function randomLetter() {
 
 function collision() {
 	alert("YOU DIED");
+  for (i=0; i<8; i++){
+    for (j=0; j<8; j++){
+      gameArray[i][j] = GridEnum.EMPTY;
+    }
+  }
+  gameArray[firstPosition][secondPosition] = GridEnum.EMPTY;
   SNAKE = [];
+  direction=null;
   startButton.innerHTML = "Start";
   startButton.style.borderTop = "4px solid black";
   startButton.style.borderBottom = "4px solid black";
   startButton.style.marginBottom = "10px";
-  gameArray[firstPosition][secondPosition] = GridEnum.EMPTY;
   
 }
 
@@ -168,10 +173,11 @@ while (size--) {
 convertGameToDisplay();
 createTable(displayArray);
 
-
+var interval = null;
 function run() {
 	generateFood();
-	setInterval(function() { eternalSnake() }, 200);
+  clearInterval(interval);
+	interval = setInterval(function() { eternalSnake() }, 200);
 }
 var gameOver = false;
 
@@ -190,7 +196,8 @@ function startSnake() {
   startButton.innerHTML = "";
   startButton.style.border = "0px";
   startButton.style.marginBottom = "88px";
-  run();
+  SNAKE.push(new SnakeSegment(0,0,true,true, randomLetter()));
+run();
 }
 
 
