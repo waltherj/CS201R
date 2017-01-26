@@ -83,10 +83,20 @@ generateFood();
 
 function collision() {
 	alert("YOU DIED");
+  SNAKE = [];
+  startButton.innerHTML = "Start";
+  startButton.style.borderTop = "4px solid black";
+  startButton.style.borderBottom = "4px solid black";
+  startButton.style.marginBottom = "10px";
+  gameArray[firstPosition][secondPosition] = GridEnum.EMPTY;
+  
 }
 
+
+var firstPosition =0;
+var secondPosition =0;
 function generateFood() {
-	gameArray[getRandomInt(0,7)][getRandomInt(0,7)] = GridEnum.FOOD;
+	gameArray[firstPosition=getRandomInt(0,7)][secondPosition=getRandomInt(0,7)] = GridEnum.FOOD;
 }
 
 function getRandomInt(min, max) {
