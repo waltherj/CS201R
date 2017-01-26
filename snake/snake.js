@@ -96,7 +96,14 @@ function collision() {
 var firstPosition =0;
 var secondPosition =0;
 function generateFood() {
-	gameArray[firstPosition=getRandomInt(0,7)][secondPosition=getRandomInt(0,7)] = GridEnum.FOOD;
+	var ranX, ranY;
+	do {
+	ranX = getRandomInt(0,7);
+	ranY = getRandomInt(0,7);
+	} while (gameArray[ranX][ranY] == GridEnum.SNAKE);
+	gameArray[ranX][ranY] = GridEnum.FOOD;
+	firstPosition = ranX;
+	secondPosition = ranY;
 }
 
 function getRandomInt(min, max) {
