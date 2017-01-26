@@ -198,12 +198,12 @@ while (size--) {
 }
 convertGameToDisplay();
 createTable(displayArray, gameArray);
-
+intervalSpeed = 200;
 var interval = null;
 function run() {
 	generateFood();
   clearInterval(interval);
-	interval = setInterval(function() { eternalSnake() }, 200);
+	interval = setInterval(function() { eternalSnake() }, intervalSpeed);
 }
 var gameOver = false;
 
@@ -260,6 +260,18 @@ case 39:
 	}
     direction = DirEnum.RIGHT;
     break;
+
+case 189:
+	slowdown();
+	break;
+case 187:
+	speedup();
+	break;
+case 13:
+	var s = document.getElementById("start");
+	if (s.innerHTML != "")
+	s.click();
+	break;
 }
 }
 
@@ -268,3 +280,19 @@ window.addEventListener("keydown", function(e) {
     e.preventDefault();
     }
     }, false);
+
+document.getElementById("speed").onclick = speedup();
+
+function speedup(){  
+if (intervalSpeed > 6)
+	intervalSpeed -= 5;
+clearInterval(interval);
+	interval = setInterval(function() { eternalSnake() }, intervalSpeed);
+}
+document.getElementById("slow").onclick = slowdown();
+
+function slowdown(){  
+intervalSpeed += 5;
+clearInterval(interval);
+	interval = setInterval(function() { eternalSnake() }, intervalSpeed);
+}
