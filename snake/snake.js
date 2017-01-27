@@ -126,6 +126,7 @@ FOOD = [];
   startButton.style.borderBottom = "4px solid black";
   startButton.style.marginBottom = "10px";
 gameOver = true;
+gameCurrent = false;
   
 }
 
@@ -218,8 +219,12 @@ function eternalSnake() {
 
 
 var startButton = document.getElementById("start");
+
+var gameCurrent = false;
+
 startButton.addEventListener("click", startSnake);
 function startSnake() {
+gameCurrent = true;
   startButton.innerHTML = "";
   startButton.style.border = "0px";
   startButton.style.marginBottom = "88px";
@@ -269,13 +274,11 @@ case 187:
 	speedup();
 	break;
 case 13:
-	var s = document.getElementById("start");
-	if (s.innerHTML != "")
+	if (gameCurrent != true)
 		startSnake();
 	break;
 case 16:
-	var s = document.getElementById("start");
-	if (s.innerHTML == "") {
+	if (gameCurrent == true) {
 		gameArray[FOOD[0].x][FOOD[0].y] = GridEnum.EMPTY;
 		document.getElementById("move").play();
 		generateFood();
